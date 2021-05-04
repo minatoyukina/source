@@ -10,6 +10,8 @@
 
     <modules>
         <module>dubbo-demo</module>
+        <module>rocketmq-example</module>
+        <module>ssm</module>
     </modules>
 
     <properties>
