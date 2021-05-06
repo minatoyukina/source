@@ -5,6 +5,7 @@ import com.example.demo.entity.Blog;
 import com.example.demo.mapper.BlogMapper;
 import com.example.demo.mapper.CommentMapper;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.SneakyThrows;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -31,5 +32,11 @@ class SimpleTests {
         BlogMapper mapper = sqlSession.getMapper(BlogMapper.class);
         Blog blog = mapper.getBlogLazy(15);
         System.out.println(blog.getCommentList());
+    }
+
+    @Test
+    @SneakyThrows
+    void test1() {
+
     }
 }

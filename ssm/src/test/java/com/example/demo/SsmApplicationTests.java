@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.entity.Blog;
+import com.example.demo.dao.ITest;
 import com.example.demo.mapper.BlogMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -14,18 +14,18 @@ class SsmApplicationTests {
     private BlogMapper blogMapper;
 
     @Autowired
-    private Blog blog;
+    private ITest test;
 
     @Test
     @SneakyThrows
     void contextLoads() {
-        Blog blog = blogMapper.getBlogLazy(15);
-        System.out.println(blog.getTitle());
+        System.out.println(blogMapper);
     }
 
     @Test
     void test() {
-        System.out.println(blog);
+        System.out.println(test);
+        System.out.println(test.test());
     }
 
 
