@@ -5,12 +5,6 @@ spring:
     password: 123456
   main:
     banner-mode: off
-
-mybatis:
-  configuration:
-    lazy-loading-enabled: true
-    aggressive-lazy-loading: false
-
 logging:
   level:
     com.example.demo: debug

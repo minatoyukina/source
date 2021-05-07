@@ -27,8 +27,11 @@ public class TestFactoryBean<T> implements FactoryBean<T> {
                 if (Object.class.equals(method.getDeclaringClass())) {
                     return method.invoke(this, args);
                 }
-                if (method.getName().contains("test")) {
-                    return "hello";
+                if (method.getName().equals("hello")) {
+                    return "world";
+                }
+                if (method.getName().equals("add")) {
+                    return (int) args[0] + (int) args[1];
                 }
                 return null;
             }

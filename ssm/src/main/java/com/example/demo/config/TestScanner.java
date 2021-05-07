@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.entity.Blog;
 import lombok.SneakyThrows;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.lang.NonNull;
@@ -45,7 +47,7 @@ public class TestScanner implements BeanDefinitionRegistryPostProcessor {
                 return true;
             }
 
-        }.doScan("com.example.demo.dao");
+        }.doScan("com.example.demo.test");
         for (BeanDefinitionHolder holder : set) {
             AbstractBeanDefinition definition = (AbstractBeanDefinition) holder.getBeanDefinition();
             String original = definition.getBeanClassName();
@@ -54,6 +56,14 @@ public class TestScanner implements BeanDefinitionRegistryPostProcessor {
             values.addGenericArgumentValue(Class.forName(original));
             definition.setConstructorArgumentValues(values);
         }
+        RootBeanDefinition definition = new RootBeanDefinition();
+        definition.setBeanClass(Blog.class);
+        definition.setInstanceSupplier(() -> {
+            Blog blog = new Blog();
+            blog.setId(1);
+            return blog;
+        });
+        registry.registerBeanDefinition("blog", definition);
     }
 
     @Override
