@@ -13,7 +13,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.StopWatch;
+import org.springframework.lang.NonNull;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import org.springframework.util.concurrent.ListenableFutureTask;
 
 class SimpleTests {
 
@@ -36,13 +38,25 @@ class SimpleTests {
         System.out.println(blog.getCommentList());
     }
 
-    @SneakyThrows
     @Test
-    void test1() {
-        StopWatch watch = new StopWatch();
-        watch.start();
-        Thread.sleep(1000);
-        watch.stop();
-        System.out.println(watch.getTotalTimeMillis());
+    void future() {
+        ListenableFutureTask<String> future = new ListenableFutureTask<>(() -> {
+            System.out.println("world");
+            return "hello";
+        });
+        future.addCallback(new ListenableFutureCallback<String>() {
+            @Override
+            public void onFailure(@NonNull Throwable ex) {
+
+            }
+
+            @Override
+            @SneakyThrows
+            public void onSuccess(String result) {
+                Thread.sleep(1000);
+                System.out.println(result);
+            }
+        });
+        future.run();
     }
 }

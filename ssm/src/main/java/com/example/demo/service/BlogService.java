@@ -11,4 +11,10 @@ import java.util.List;
 public interface BlogService {
 
     List<Blog> listBlog();
+
+    void saveBlog(Blog blog);
+
+    void testSave(Blog blog);
+
+    Blog testGet(Integer id);
 }

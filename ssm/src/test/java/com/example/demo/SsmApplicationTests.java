@@ -14,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @SpringBootTest
 class SsmApplicationTests {
 
@@ -89,8 +86,8 @@ class SsmApplicationTests {
 
     @Test
     void transaction() {
-        List<Blog> list = blogService.listBlog();
-        System.out.println(list.stream().map(Blog::getId).collect(Collectors.toList()));
+        Blog blog = new Blog();
+        blogService.testSave(blog);
     }
 
 
