@@ -10,6 +10,9 @@
                     select="com.example.demo.mapper.CommentMapper.getByBlogId"
                     column="id"/>
     </resultMap>
+    <update id="updateBlog">
+        update blog set title = #{title} where id = #{id}
+    </update>
 
 
     <select id="getBlogById" resultType="com.example.demo.entity.Blog">

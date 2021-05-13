@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.aop.Log;
 import com.example.demo.entity.Blog;
 import com.example.demo.mapper.BlogMapper;
 import com.example.demo.service.BlogService;
@@ -40,18 +41,27 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, timeout = 5)
     @SneakyThrows
     public void testSave(Blog blog) {
         TimeUnit.SECONDS.sleep(10);
         jdbcTemplate.update("insert into blog(title) values (" + blog.getTitle() + ")");
     }
 
+    @Override
+    @Transactional
+    @SneakyThrows
+    @Log
+    public void testUpdate(Blog blog) {
+        blogMapper.getBlogById(blog.getId());
+        Thread.sleep(10000);
+        blogMapper.updateBlog(blog.getId(), blog.getTitle());
+    }
+
     @SneakyThrows
     @Override
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public Blog testGet(Integer id) {
-        Thread.sleep(10_000);
         return blogMapper.getBlogById(id);
     }
 

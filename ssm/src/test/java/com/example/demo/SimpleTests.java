@@ -17,6 +17,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.util.concurrent.ListenableFutureTask;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 class SimpleTests {
 
     @Test
@@ -40,10 +43,8 @@ class SimpleTests {
 
     @Test
     void future() {
-        ListenableFutureTask<String> future = new ListenableFutureTask<>(() -> {
-            System.out.println("world");
-            return "hello";
-        });
+        ExecutorService service = Executors.newCachedThreadPool();
+        ListenableFutureTask<String> future = new ListenableFutureTask<>(() -> "world");
         future.addCallback(new ListenableFutureCallback<String>() {
             @Override
             public void onFailure(@NonNull Throwable ex) {
@@ -53,10 +54,10 @@ class SimpleTests {
             @Override
             @SneakyThrows
             public void onSuccess(String result) {
-                Thread.sleep(1000);
                 System.out.println(result);
             }
         });
-        future.run();
+        service.submit(future);
+        System.out.println("hello");
     }
 }

@@ -35,4 +35,13 @@ public class BlogController {
         blogService.testSave(blog);
         return blog;
     }
+
+    @PutMapping("{id}")
+    public Blog update(String title, @PathVariable Integer id) {
+        Blog blog = new Blog();
+        blog.setTitle(title);
+        blog.setId(id);
+        blogService.testUpdate(blog);
+        return blog;
+    }
 }

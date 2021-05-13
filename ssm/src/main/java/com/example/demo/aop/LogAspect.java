@@ -45,7 +45,7 @@ public class LogAspect {
         if (!Objects.isNull(args) && args.length > 0) {
             arg = objectMapper.writeValueAsString(args);
         }
-        log.info("{}.{}({}) use {} ns", className, methodName, arg, watch.getLastTaskTimeNanos());
+        log.info("{}.{}({}) use {} ms", className, methodName, arg, watch.getTotalTimeMillis());
         return result;
     }
 }

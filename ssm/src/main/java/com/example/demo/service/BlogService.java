@@ -17,4 +17,6 @@ public interface BlogService {
     void testSave(Blog blog);
 
     Blog testGet(Integer id);
+
+    void testUpdate(Blog blog);
 }
