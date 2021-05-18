@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.aop.Log;
+import com.example.demo.config.AsyncConfig;
 import com.example.demo.entity.Blog;
 import com.example.demo.mapper.BlogMapper;
 import com.example.demo.service.BlogService;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2021/5/7 14:51
  */
 @Service
+@SuppressWarnings("all")
 public class BlogServiceImpl implements BlogService {
 
     @Resource
@@ -27,6 +29,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Resource
     private BlogMapper blogMapper;
+
+    @Resource
+    private AsyncConfig asyncConfig;
 
     @Override
     public List<Blog> listBlog() {
@@ -48,14 +53,15 @@ public class BlogServiceImpl implements BlogService {
         jdbcTemplate.update("insert into blog(title) values (" + blog.getTitle() + ")");
     }
 
+    // dead lock
+    @SneakyThrows
     @Override
     @Transactional
-    @SneakyThrows
     @Log
     public void testUpdate(Blog blog) {
         blogMapper.getBlogById(blog.getId());
-        Thread.sleep(10000);
         blogMapper.updateBlog(blog.getId(), blog.getTitle());
+        asyncConfig.test().get();
     }
 
     @SneakyThrows
