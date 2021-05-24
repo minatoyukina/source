@@ -10,6 +10,7 @@
 
     <modules>
         <module>dubbo-demo</module>
+        <module>rocketmq-example</module>
         <module>shardingsphere-example</module>
         <module>ssm</module>
         <module>cloud</module>
