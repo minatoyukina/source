@@ -18,15 +18,61 @@ spring:
                 redis-rate-limiter.burstCapacity: 20 # 突发20个
                 redis-rate-limiter.requestedTokens: 1 # 每次请求消耗1个
                 key-resolver: "#{@ipKeyResolver}"
+            - StripPrefix=1
+        - id: provider
+          uri: lb://cloud-provider
+          predicates:
+            - Path=/p/**
+          filters:
             - name: CircuitBreaker
               args:
-                name: demoCustomizer
-#                fallbackURi: forward:/501
+                fallbackURi: forward:/501
             - StripPrefix=1
 server:
   port: 8000
-resilience4j:
-  circuitbreaker:
-    instances:
-      demoCustomizer:
-        failureRateThreshold: 10
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 5
+      permittedNumberOfCallsInHalfOpenState: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 2s
+      failureRateThreshold: 5
+      eventConsumerBufferSize: 10
+      slowCallDurationThreshold: 200ms
+      slowCallRateThreshold: 30
+      recordExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+        - java.io.IOException
+      ignoreExceptions:
+        - java.lang.IllegalStateException
+    shared:
+      slidingWindowSize: 100
+      permittedNumberOfCallsInHalfOpenState: 30
+      waitDurationInOpenState: 1s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+      ignoreExceptions:
+        - java.lang.IllegalStateException
+  instances:
+    backendA:
+      baseConfig: default
+    backendB:
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      waitDurationInOpenState: 1s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+
+resilience4j.timelimiter:
+  time-limiter-aspect-order: 398
+  configs:
+    default:
+      timeoutDuration: 1s
+      cancelRunningFuture: false
+  instances:
+    backendB:
+      timeoutDuration: 250ms

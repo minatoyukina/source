@@ -2,6 +2,7 @@ package com.example.cloud.gateway.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -24,6 +25,7 @@ import java.nio.charset.Charset;
  * @since 2021/6/2 9:56
  */
 @Configuration
+@Slf4j
 @SuppressWarnings("all")
 public class ResponseFilter implements GlobalFilter, Ordered {
 
