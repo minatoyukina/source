@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class CommentFactoryBean implements FactoryBean<Comment> {
 
     @Override
-    @Log
+    @Log("test")
     public Comment getObject() {
         return new Comment();
     }

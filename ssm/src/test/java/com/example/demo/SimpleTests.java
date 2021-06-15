@@ -4,6 +4,9 @@ import com.example.demo.config.SlowSqlInterceptor;
 import com.example.demo.entity.Blog;
 import com.example.demo.mapper.BlogMapper;
 import com.example.demo.mapper.CommentMapper;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtMethod;
 import lombok.SneakyThrows;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
@@ -59,5 +62,16 @@ class SimpleTests {
         });
         service.submit(future);
         System.out.println("hello");
+    }
+
+    @Test
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
+    void asm() {
+        ClassPool pool = ClassPool.getDefault();
+        CtClass ctClass = pool.get("com.example.demo.entity.Blog");
+        ctClass.addMethod(CtMethod.make("public void print(){System.out.println(this);}", ctClass));
+        Class aClass = ctClass.toClass();
+        aClass.getMethod("print").invoke(aClass.newInstance());
     }
 }

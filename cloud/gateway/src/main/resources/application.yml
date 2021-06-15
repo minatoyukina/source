@@ -5,5 +5,28 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: consumer
+          uri: lb://cloud-consumer
+          predicates:
+            - Path=/c/**
+          filters:
+            - name: CustomizedLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10 # 每秒补充10个
+                redis-rate-limiter.burstCapacity: 20 # 突发20个
+                redis-rate-limiter.requestedTokens: 1 # 每次请求消耗1个
+                key-resolver: "#{@ipKeyResolver}"
+            - name: CircuitBreaker
+              args:
+                name: demoCustomizer
+#                fallbackURi: forward:/501
+            - StripPrefix=1
 server:
   port: 8000
+resilience4j:
+  circuitbreaker:
+    instances:
+      demoCustomizer:
+        failureRateThreshold: 10
