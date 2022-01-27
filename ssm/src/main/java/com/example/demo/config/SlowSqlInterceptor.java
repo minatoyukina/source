@@ -50,7 +50,7 @@ public class SlowSqlInterceptor implements Interceptor {
         Object proceed = invocation.proceed();
         int result = 0;
         if (proceed instanceof ArrayList) {
-            ArrayList resultList = (ArrayList) proceed;
+            ArrayList<?> resultList = (ArrayList<?>) proceed;
             result = resultList.size();
         }
         if (proceed instanceof Integer) {
@@ -141,7 +141,7 @@ public class SlowSqlInterceptor implements Interceptor {
     private String getParameterValue(Object obj) {
         String value;
         if (obj instanceof String) {
-            value = "'" + obj.toString() + "'";
+            value = "'" + obj + "'";
         } else if (obj instanceof Date) {
             DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.CHINA);
             value = "'" + formatter.format(obj) + "'";

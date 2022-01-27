@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/re_blog?serverTimezone=GMT%2B8&useSSL=false
+    url: jdbc:mysql://129.204.119.180:8000/test?serverTimezone=GMT%2B8&useSSL=false
     username: root
-    password: 123456
+    password: ccq1994
   main:
     banner-mode: off
 logging:

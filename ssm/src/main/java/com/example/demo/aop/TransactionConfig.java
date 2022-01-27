@@ -28,7 +28,7 @@ public class TransactionConfig {
     /**
      * 事务失效时间
      */
-    private static final int TX_METHOD_TIMEOUT = 5;
+    private static final int TX_METHOD_TIMEOUT = 50;
 
     @Resource
     private TransactionManager transactionManager;
